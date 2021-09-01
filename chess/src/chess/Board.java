@@ -153,8 +153,10 @@ public class Board {
 			
 			System.out.println();
 			System.out.println("  -   -   -   -   -   -   -   -");
+			
 			i--;
 		}
+		System.out.println("  0   1   2   3   4   5   6   7");
 		System.out.println();
 	}
 	
@@ -177,8 +179,8 @@ public class Board {
 		Board test = new Board();
 		test.setStartingPositions();
 		test.drawBoardInConsole();
-		int[] selection = {0,0};
-		int[] destination = {2,0};
+		int[] selection = {0,4};
+		int[] destination = {1,3};
 		test.move(selection, destination);
 		test.drawBoardInConsole();
 	}

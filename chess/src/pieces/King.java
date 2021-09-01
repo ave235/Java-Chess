@@ -22,14 +22,86 @@ public class King implements Piece{
 
 	@Override
 	public int[][] listPossibleMoves(int[] currentPosition) {
-		// TODO Auto-generated method stub
-		return null;
+		int[][] output = new int[8][];
+		int row = currentPosition[0];
+		int col = currentPosition[1];
+		int i = 0;
+		
+		// N
+		if (row < 7) {
+			int [] newPosition = {row + 1, col}; 
+			output[i] = newPosition;
+			i++;
+		}
+		
+		// S
+		if (row > 0) {
+			int [] newPosition = {row - 1, col}; 
+			output[i] = newPosition;
+			i++;
+		}
+		
+		// E
+		if (col < 7) {
+			int [] newPosition = {row, col + 1}; 
+			output[i] = newPosition;
+			i++;
+		}
+		
+		// W
+		if (col > 0) {
+			int [] newPosition = {row, col - 1}; 
+			output[i] = newPosition;
+			i++;
+		}
+		
+		//NE
+		if (col < 7 && row < 7) {
+			int [] newPosition = {row + 1, col + 1};
+			output[i] = newPosition;
+			i++;		
+		}
+		
+		//SE
+		if (col > 0 && row < 7) {
+			int [] newPosition = {row + 1, col - 1};
+			output[i] = newPosition;
+			i++;		
+		}
+		
+		//SW
+		if (col > 0 && row > 0) {
+			int [] newPosition = {row - 1, col - 1};
+			output[i] = newPosition;
+			i++;		
+		}
+		
+		//NW
+		if (col < 7 && row > 0) {
+			int [] newPosition = {row - 1, col + 1};
+			output[i] = newPosition;
+			i++;		
+		}
+		
+		
+		return output;
 	}
 
 	@Override
 	public boolean possibleSquare(int[] origin, int[] destination) {
-		// TODO Auto-generated method stub
+		
+		int[][] listOfMoves = this.listPossibleMoves(origin);
+		for (int[] move : listOfMoves) {
+			if (move == null) {
+				continue;
+			}
+			else if(move[0] == destination[0] && move[1] == destination[1]) {
+				return true;
+			}
+		}
+		
 		return false;
+		
 	}
 	
 }
