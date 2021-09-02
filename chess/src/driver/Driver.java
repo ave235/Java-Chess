@@ -1,7 +1,12 @@
 package driver;
 
 import chess.*;
+import gui.BlackSquare;
 import gui.Table;
+import gui.WhiteSquare;
+import java.lang.Thread;
+
+import javax.swing.JLabel;
 
 
 public class Driver {
@@ -13,9 +18,20 @@ public class Driver {
 			Board test = new Board();
 			test.setStartingPositions();
 			test.drawBoardInConsole();
-			int[] selection = {0,1};
-			int[] destination = {1,3};
-			test.move(selection, destination);
 			Table guiTest = new Table(test);
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			int[] selection = {0,1};
+			int[] destination = {2,2};
+			test.move(selection, destination);
+			
+			guiTest.refreshBoard();
+			
 		}
+		
+		
 }

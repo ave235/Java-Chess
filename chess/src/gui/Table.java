@@ -8,10 +8,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import chess.Board;
 
 public class Table extends JFrame implements MouseListener {
+	
+	private JLabel[] squareContainer;
 	
 	public Table(Board brd) {
 		
@@ -26,6 +29,9 @@ public class Table extends JFrame implements MouseListener {
 		ImageIcon fauxicon = new ImageIcon("Images/bk.png");
 		this.setIconImage(fauxicon.getImage());
 		
+		this.squareContainer = new JLabel[64];;
+		
+		int u = 0;
 		int i = 7;
 		int j = 0;
 		while (i > -1) {
@@ -36,12 +42,18 @@ public class Table extends JFrame implements MouseListener {
 						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j]);
 						bs.setBounds(j*100, i*100, 100, 100);
 						this.add(bs);
+						this.squareContainer[u] = bs;
+						u++;
 						j++;
+						
+						
 					}
 					else {
 						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j]);
 						ws.setBounds(j*100, i*100, 100, 100);
 						this.add(ws);
+						this.squareContainer[u] = ws;
+						u++;
 						j++;
 					}
 						
@@ -55,12 +67,16 @@ public class Table extends JFrame implements MouseListener {
 						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j]);
 						bs.setBounds(j*100, i*100, 100, 100);
 						this.add(bs);
+						this.squareContainer[u] = bs;
+						u++;
 						j++;
 					}
 					else {
 						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j]);
 						ws.setBounds(j*100, i*100, 100, 100);
 						this.add(ws);
+						this.squareContainer[u] = ws;
+						u++;
 						j++;
 					}
 						
@@ -71,6 +87,20 @@ public class Table extends JFrame implements MouseListener {
 		
 		this.setVisible(true);
 		
+	}
+	
+	public void refreshBoard () {
+		for (JLabel sq : this.squareContainer) {
+			if (sq instanceof WhiteSquare) {
+				sq = (WhiteSquare) sq;
+				((WhiteSquare) sq).refreshImage();
+			}
+			else if (sq instanceof BlackSquare) {
+				sq = (BlackSquare) sq;
+				((BlackSquare) sq).refreshImage();
+			}
+		}
+		this.revalidate();
 	}
 
 	@Override
@@ -101,5 +131,13 @@ public class Table extends JFrame implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public JLabel[] getSquareContainer() {
+		return squareContainer;
+	}
+
+	public void setSquareContainer(JLabel[] squareContainer) {
+		this.squareContainer = squareContainer;
 	}
 }

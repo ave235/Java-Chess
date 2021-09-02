@@ -32,8 +32,22 @@ public class Pawn implements Piece {
 
 	@Override
 	public int[][] listPossibleMoves(int[] currentPosition) {
-		// TODO Auto-generated method stub
-		return null;
+		int[][] output = new int[50][0];
+		
+		int i = 0;
+		int row = currentPosition[0];
+		int col = currentPosition[1];
+		
+		if (this.color == 0) { //if pawn is white
+			
+			
+			
+		}
+		else if (this.color == 1){ //if pawn is black
+			
+		}
+		
+		return output;
 	}
 
 	@Override
