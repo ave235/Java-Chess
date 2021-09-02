@@ -19,6 +19,13 @@ public class Queen implements Piece {
 	public void setColor(int color) {
 		this.color = color;
 	}
+	
+	public String toString() {
+		if (this.color == 0) {
+			return "White Queen";
+		}
+		return "Black Queen";
+	}
 
 	@Override
 	public int[][] listPossibleMoves(int[] currentPosition) {

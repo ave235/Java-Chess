@@ -19,14 +19,14 @@ import pieces.Piece;
 import pieces.Queen;
 import pieces.Rook;
 
-public class BlackSquare extends JLabel implements MouseListener{
+public class WhiteSquare extends JLabel implements MouseListener {
+private Square sq;
 	
-	private Square sq;
-	
-	public BlackSquare(Square sq) {
+	public WhiteSquare(Square sq) {
+		
 		
 		this.setSq(sq);
-		this.setBackground(new Color(179, 116, 34));
+		this.setBackground(new Color(242, 228, 184));
 		this.setOpaque(true);
 		this.setSize(50,50);
 		
@@ -102,9 +102,7 @@ public class BlackSquare extends JLabel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("You clicked on a black square!");
-		System.out.println("This square contains:");
-		System.out.println(this.sq.getPiece());
+		System.out.println("You clicked on a white square!");
 	}
 
 	@Override
@@ -130,7 +128,5 @@ public class BlackSquare extends JLabel implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 	
 }

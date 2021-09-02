@@ -19,6 +19,13 @@ public class Knight implements Piece {
 	public void setColor(int color) {
 		this.color = color;
 	}
+	
+	public String toString() {
+		if (this.color == 0) {
+			return "White Knight";
+		}
+		return "Black Knight";
+	}
 
 	@Override
 	public int[][] listPossibleMoves(int[] currentPosition) {

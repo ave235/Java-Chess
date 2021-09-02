@@ -19,6 +19,13 @@ public class Rook implements Piece{
 	public void setColor(int color) {
 		this.color = color;
 	}
+	
+	public String toString() {
+		if (this.color == 0) {
+			return "White Rook";
+		}
+		return "Black Rook";
+	}
 
 	@Override
 	public int[][] listPossibleMoves(int[] currentPosition) {

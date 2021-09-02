@@ -14,7 +14,10 @@ public class Pawn implements Piece {
 	
 	
 	public String toString() {
-		return "p";
+		if (this.color == 0) {
+			return "White Pawn";
+		}
+		return "Black Pawn";
 	}
 
 	public int getColor() {

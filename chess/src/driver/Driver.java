@@ -13,12 +13,8 @@ public class Driver {
 			Board test = new Board();
 			test.setStartingPositions();
 			test.drawBoardInConsole();
-			int[] selection = {0,3};
-			int[] destination = {3,0};
-			test.move(selection, destination);
-			test.drawBoardInConsole();
-			
-			Table guiTest = new Table();
+
+			Table guiTest = new Table(test);
 			
 		}
 }

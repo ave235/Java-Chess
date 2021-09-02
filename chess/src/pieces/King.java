@@ -19,6 +19,13 @@ public class King implements Piece{
 	public void setColor(int color) {
 		this.color = color;
 	}
+	
+	public String toString() {
+		if (this.color == 0) {
+			return "White King";
+		}
+		return "Black King";
+	}
 
 	@Override
 	public int[][] listPossibleMoves(int[] currentPosition) {
