@@ -173,15 +173,5 @@ public class Board {
 	}
 	
 	
-	// DRIVER METHOD
 	
-	public static void main (String [] args) {
-		Board test = new Board();
-		test.setStartingPositions();
-		test.drawBoardInConsole();
-		int[] selection = {0,4};
-		int[] destination = {1,3};
-		test.move(selection, destination);
-		test.drawBoardInConsole();
-	}
 }
