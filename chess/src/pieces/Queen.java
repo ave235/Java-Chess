@@ -1,5 +1,7 @@
 package pieces;
 
+import chess.Board;
+
 public class Queen implements Piece {
 
 	private int color;
@@ -129,7 +131,7 @@ public class Queen implements Piece {
 	}
 
 	@Override
-	public boolean possibleSquare(int[] origin, int[] destination) {
+	public boolean possibleSquare(int[] origin, int[] destination, Board board) {
 		int[][] listOfMoves = this.listPossibleMoves(origin);
 		for (int[] move : listOfMoves) {
 			if (move == null) {

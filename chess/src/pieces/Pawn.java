@@ -1,5 +1,7 @@
 package pieces;
 
+import chess.Board;
+
 public class Pawn implements Piece {
 	
 	private int color; //0 is white, 1 is black
@@ -35,7 +37,7 @@ public class Pawn implements Piece {
 	}
 
 	@Override
-	public boolean possibleSquare(int[] origin, int[] destination) {
+	public boolean possibleSquare(int[] origin, int[] destination, Board board) {
 		// TODO Auto-generated method stub
 		return false;
 	}

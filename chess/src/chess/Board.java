@@ -165,11 +165,13 @@ public class Board {
 		if (item == null) {
 			throw new IllegalArgumentException("Selected Square does not contain a piece!");
 		}
-		else if (!item.possibleSquare(selection, destination)) {
+		else if (!item.possibleSquare(selection, destination, this)) {
 			throw new IllegalArgumentException("Selected destination is not a possible move!");
 		}
-		situation[destination[0]][destination[1]].setPiece(situation[selection[0]][selection[1]].getPiece());
-		situation[selection[0]][selection[1]].setPiece(null);
+		else {
+			situation[destination[0]][destination[1]].setPiece(situation[selection[0]][selection[1]].getPiece());
+			situation[selection[0]][selection[1]].setPiece(null);
+		}
 	}
 	
 	
