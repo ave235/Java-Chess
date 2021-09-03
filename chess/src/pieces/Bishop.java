@@ -34,6 +34,8 @@ public class Bishop implements Piece{
 		int[][] output = new int[50][];
 		int i = 0;
 		
+		
+		
 		//NE
 		int posRow = currentPosition[0];
 		int posCol = currentPosition[1];
@@ -87,7 +89,7 @@ public class Bishop implements Piece{
 			i++;
 		}
 		
-		
+		output = this.nullRemover(output);
 		
 		return output;
 	}
@@ -95,16 +97,83 @@ public class Bishop implements Piece{
 	@Override
 	public boolean possibleSquare(int[] origin, int[] destination, Board board) {
 		
-		int[][] listOfMoves = this.listPossibleMoves(origin);
-		for (int[] move : listOfMoves) {
-			if (move == null) {
-				continue;
-			}
-			else if(move[0] == destination[0] && move[1] == destination[1]) {
-				return true;
+		if(origin[0] == destination[0] || origin[1] == destination[1]) {
+			return false;
+		}
+		
+		int deltaRow = 0;
+		int deltaColumn = 0;
+		int initRow = origin[0];
+		int initCol = origin[1];
+		
+		
+		
+		if (initRow < destination[0]) {
+			deltaRow = 1;
+		}
+		else {
+			deltaRow = -1;
+		}
+		
+		if (initCol < destination[1]) {
+			deltaColumn = 1;
+		}
+		else {
+			deltaColumn = -1;
+		}
+		
+		if (deltaRow != 0 && deltaColumn != 0) {
+			if ((origin[0] - destination[0]) - (origin[1] - destination[1]) != 0
+				&& (origin[0] - destination[0]) + (origin[1] - destination[1]) != 0) {
+				return false;
 			}
 		}
 		
+		while (initRow != destination[0] && initCol != destination[1]) {
+			
+			if(initRow != origin[0]) {
+				if (board.getSituation()[initRow][initCol].getPiece() != null) {
+					System.out.println("ding");
+					return false;
+				}
+				
+			}
+			
+
+			
+			initRow = initRow + deltaRow;
+			initCol = initCol + deltaColumn;
+		}
+		
+		if (board.getSituation()[destination[0]][destination[1]].getPiece() == null) {
+			return true;
+		}
+		
+		if (board.getSituation()[destination[0]][destination[1]].getPiece().getColor() != this.getColor()) {
+			return true;
+		}
+		
 		return false;
+	}
+	
+	public int[][] nullRemover(int[][] list){
+		int i = 0;
+		for (int[] item : list) {
+			if (item != null) {
+				i++;
+			}
+		}
+		
+		
+		int[][] removed = new int[i][0];
+		i = 0;
+		for (int[] item : list) {
+			if (item != null) {
+				removed[i] = item;
+				i++;
+			}
+		}
+		
+		return removed;
 	}
 }

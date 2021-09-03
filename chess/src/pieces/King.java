@@ -92,6 +92,7 @@ public class King implements Piece{
 			i++;		
 		}
 		
+		output = this.nullRemover(output);
 		
 		return output;
 	}
@@ -100,17 +101,43 @@ public class King implements Piece{
 	public boolean possibleSquare(int[] origin, int[] destination, Board board) {
 		
 		int[][] listOfMoves = this.listPossibleMoves(origin);
+		Piece pieceAtDestination = board.getSituation()[destination[0]][destination[1]].getPiece();
+		
+		
 		for (int[] move : listOfMoves) {
-			if (move == null) {
-				continue;
-			}
-			else if(move[0] == destination[0] && move[1] == destination[1]) {
-				return true;
+			if(move[0] == destination[0] && move[1] == destination[1]) {
+				if(pieceAtDestination == null) {
+					return true;
+				}
+				else if(this.color != pieceAtDestination.getColor()) {
+					return true;
+				}
 			}
 		}
 		
+		
 		return false;
 		
+	}
+	
+	public int[][] nullRemover(int[][] list){
+		int i = 0;
+		for (int[] item : list) {
+			if (item != null) {
+				i++;
+			}
+		}
+		
+		int[][] removed = new int[i][0];
+		i = 0;
+		for (int[] item : list) {
+			if (item != null) {
+				removed[i] = item;
+				i++;
+			}
+		}
+		
+		return removed;
 	}
 	
 }

@@ -20,7 +20,11 @@ import pieces.Queen;
 import pieces.Rook;
 
 public class WhiteSquare extends JLabel implements MouseListener {
-private Square sq;
+	
+	private Square sq;
+	private int row;
+	private int col;
+	private Table table;
 
 	ImageIcon bb = new ImageIcon("Images/bb.png");
 	ImageIcon bk = new ImageIcon("Images/bk.png");
@@ -35,7 +39,7 @@ private Square sq;
 	ImageIcon wq = new ImageIcon("Images/wq.png");
 	ImageIcon wr = new ImageIcon("Images/wr.png");
 	
-	public WhiteSquare(Square sq) {
+	public WhiteSquare(Square sq, int row, int col) {
 		
 		
 		this.setSq(sq);
@@ -43,6 +47,8 @@ private Square sq;
 		this.setOpaque(true);
 		this.setSize(50,50);
 		
+		this.row = row;
+		this.col = col;
 		
 		
 		if (this.sq.getPiece() != null) {
@@ -151,16 +157,24 @@ private Square sq;
 		}
 	}
 	
+	public void expressSelection() {
+		
+	}
+	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("You clicked on a white square!");
-		System.out.println("This square contains: " + this.sq.getPiece());
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		System.out.println("You clicked on a white square!");
+		System.out.println("This square contains: " + this.sq.getPiece());
+		System.out.println("Location of click {" + row + ", " + col + "}");
+		int [] location = {this.row, this.col};
+		this.table.mousePressInterpret(location);
+		this.table.refreshBoard();
 		
 	}
 
@@ -180,6 +194,14 @@ private Square sq;
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Table getTable() {
+		return table;
+	}
+
+	public void setTable(Table table) {
+		this.table = table;
 	}
 	
 }

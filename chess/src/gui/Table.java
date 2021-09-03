@@ -15,16 +15,18 @@ import chess.Board;
 public class Table extends JFrame implements MouseListener {
 	
 	private JLabel[] squareContainer;
+	private Board brd;
 	
 	public Table(Board brd) {
 		
-		
+		this.brd = brd;
 		this.setTitle("Chess");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
 		this.setSize(815,839);
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setLayout(null);
+		
 		
 		ImageIcon fauxicon = new ImageIcon("Images/bk.png");
 		this.setIconImage(fauxicon.getImage());
@@ -39,7 +41,7 @@ public class Table extends JFrame implements MouseListener {
 				j = 0;
 				while (j < 8) {
 					if (j % 2 == 1) {
-						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j]);
+						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j], 7-i, j);
 						bs.setBounds(j*100, i*100, 100, 100);
 						this.add(bs);
 						this.squareContainer[u] = bs;
@@ -49,7 +51,7 @@ public class Table extends JFrame implements MouseListener {
 						
 					}
 					else {
-						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j]);
+						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j], 7-i, j);
 						ws.setBounds(j*100, i*100, 100, 100);
 						this.add(ws);
 						this.squareContainer[u] = ws;
@@ -64,7 +66,7 @@ public class Table extends JFrame implements MouseListener {
 				j = 0;
 				while (j < 8) {
 					if (j % 2 == 0) {
-						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j]);
+						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j], 7-i, j);
 						bs.setBounds(j*100, i*100, 100, 100);
 						this.add(bs);
 						this.squareContainer[u] = bs;
@@ -72,7 +74,7 @@ public class Table extends JFrame implements MouseListener {
 						j++;
 					}
 					else {
-						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j]);
+						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j], 7-i, j);
 						ws.setBounds(j*100, i*100, 100, 100);
 						this.add(ws);
 						this.squareContainer[u] = ws;
@@ -85,7 +87,10 @@ public class Table extends JFrame implements MouseListener {
 			}
 		}
 		
+		this.addMouseListener(this);
+		this.setFocusable(true);
 		this.setVisible(true);
+		
 		
 	}
 	
@@ -102,10 +107,48 @@ public class Table extends JFrame implements MouseListener {
 		}
 		this.revalidate();
 	}
+	
+	public void tableAssignment() { //THIS HAS TO BE CALLED IN THE DRIVER FUNCTION FOR GUI TO WORK
+		for (JLabel sq : this.squareContainer) {
+			if (sq instanceof WhiteSquare) {
+				sq = (WhiteSquare) sq;
+				((WhiteSquare) sq).setTable(this);
+			}
+			else if (sq instanceof BlackSquare) {
+				sq = (BlackSquare) sq;
+				((BlackSquare) sq).setTable(this);
+			}
+		}
+	}
+	
+	public void mousePressInterpret(int[] mouseClickedLocation) {
+		if (brd.getHalfTurn()[0] == null && brd.getHalfTurn()[1] == null) {
+			if (brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece() != null) {
+				brd.getHalfTurn()[0] = mouseClickedLocation;
+			}
+		}
+		else {
+			brd.getHalfTurn()[1] = mouseClickedLocation;
+			try {
+				brd.move(brd.getHalfTurn()[0], brd.getHalfTurn()[1]);
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			brd.getHalfTurn()[0] = null;
+			brd.getHalfTurn()[1] = null;
+		}
+	}
+	
+	public void executeSelection(int[] mouseClickedLocation) {
+		
+	}
+	
+	public void removeSelection() {
+		
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -139,5 +182,9 @@ public class Table extends JFrame implements MouseListener {
 
 	public void setSquareContainer(JLabel[] squareContainer) {
 		this.squareContainer = squareContainer;
+	}
+	
+	public String toString() {
+		return "Table";
 	}
 }

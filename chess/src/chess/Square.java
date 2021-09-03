@@ -4,11 +4,13 @@ import pieces.*;
 
 public class Square {
 	private Piece piece;
+	private Board board;
 	
 	// CONSTRUCTORS
 	
-	public Square() {
+	public Square(Board board) {
 		this.setPiece(null);
+		this.setBoard(board);
 	}
 
 	//GETTERS AND SETTERS
@@ -19,6 +21,14 @@ public class Square {
 
 	public void setPiece(Piece piece) {
 		this.piece = piece;
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 	
 	

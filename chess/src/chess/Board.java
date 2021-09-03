@@ -6,6 +6,7 @@ public class Board {
 	
 	private Square[][] situation;
 	private int turn;
+	private int[][] halfTurn;
 	
 	// CONSTRUCTORS
 	
@@ -20,7 +21,7 @@ public class Board {
 		while(i < rows) {
 			j = 0;
 			while (j < cols) {
-				Square sq = new Square();
+				Square sq = new Square(this);
 				newBoard[i][j] = sq;
 				j++;
 			}
@@ -28,7 +29,9 @@ public class Board {
 		}
 		 
 		this.situation = newBoard;
-		this.turn = 0;
+		this.setTurn(0);
+		setHalfTurn(new int[2][]);
+		
 		
 	}
 	
@@ -172,7 +175,26 @@ public class Board {
 			situation[destination[0]][destination[1]].setPiece(situation[selection[0]][selection[1]].getPiece());
 			situation[selection[0]][selection[1]].setPiece(null);
 		}
+		this.drawBoardInConsole();
 	}
+
+	public int getTurn() {
+		return turn;
+	}
+
+	public void setTurn(int turn) {
+		this.turn = turn;
+	}
+
+	public int[][] getHalfTurn() {
+		return halfTurn;
+	}
+
+	public void setHalfTurn(int[][] halfTurn) {
+		this.halfTurn = halfTurn;
+	}
+	
+	
 	
 	
 	

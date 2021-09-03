@@ -19,17 +19,7 @@ public class Driver {
 			test.setStartingPositions();
 			test.drawBoardInConsole();
 			Table guiTest = new Table(test);
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			int[] selection = {0,1};
-			int[] destination = {2,2};
-			test.move(selection, destination);
-			
-			guiTest.refreshBoard();
+			guiTest.tableAssignment();
 			
 		}
 		

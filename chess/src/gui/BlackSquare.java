@@ -22,6 +22,9 @@ import pieces.Rook;
 public class BlackSquare extends JLabel implements MouseListener{
 	
 	private Square sq;
+	private int col;
+	private int row;
+	private Table table;
 	
 	ImageIcon bb = new ImageIcon("Images/bb.png");
 	ImageIcon bk = new ImageIcon("Images/bk.png");
@@ -36,12 +39,16 @@ public class BlackSquare extends JLabel implements MouseListener{
 	ImageIcon wq = new ImageIcon("Images/wq.png");
 	ImageIcon wr = new ImageIcon("Images/wr.png");
 	
-	public BlackSquare(Square sq) {
+	//CONSTRUCTOR
+	public BlackSquare(Square sq, int row, int col) {
 		
 		this.setSq(sq);
 		this.setBackground(new Color(179, 116, 34));
 		this.setOpaque(true);
 		this.setSize(50,50);
+		
+		this.row = row;
+		this.col = col;
 		
 
 		
@@ -94,6 +101,7 @@ public class BlackSquare extends JLabel implements MouseListener{
 		this.addMouseListener(this);
 	}
 	
+	//OTHER STUFF
 	public void refreshImage() {
 		
 		if (this.sq.getPiece() != null) {
@@ -143,6 +151,10 @@ public class BlackSquare extends JLabel implements MouseListener{
 		}
 	}
 	
+	public void expressSelection() {
+		
+	}
+	
 	public Square getSq() {
 		return sq;
 	}
@@ -153,13 +165,17 @@ public class BlackSquare extends JLabel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		System.out.println("You clicked on a black square!");
-		System.out.println("This square contains: " + this.sq.getPiece());
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		System.out.println("You clicked on a black square!");
+		System.out.println("This square contains: " + this.sq.getPiece());
+		System.out.println("Location of click {" + row + ", " + col + "}");
+		int [] location = {this.row, this.col};
+		this.getTable().mousePressInterpret(location);
+		this.table.refreshBoard();
 		
 	}
 
@@ -179,6 +195,14 @@ public class BlackSquare extends JLabel implements MouseListener{
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Table getTable() {
+		return table;
+	}
+
+	public void setTable(Table table) {
+		this.table = table;
 	}
 	
 	
