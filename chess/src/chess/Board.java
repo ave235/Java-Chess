@@ -1,5 +1,8 @@
 package chess;
 
+import javax.swing.JFrame;
+
+import gui.Table;
 import pieces.*;
 
 public class Board {
@@ -8,6 +11,9 @@ public class Board {
 	private int turn;
 	private int[][] halfTurn;
 	private int winner;
+	private Piece whiteKing;
+	private Piece blackKing;
+	private Table frame;
 	
 	// CONSTRUCTORS
 	
@@ -70,6 +76,12 @@ public class Board {
 		}
 		else if (piece == "king") {
 			King king = new King(color, row, col);
+			if (king.getColor() == 0) {
+				this.setWhiteKing(king);
+			}
+			else {
+				this.setBlackKing(king);
+			}
 			this.situation[row][col].setPiece(king);
 		}
 		else if (piece == "bishop") {
@@ -180,13 +192,25 @@ public class Board {
 			item.setRow(destination[0]);
 			item.setCol(destination[1]);
 		}
+		
 		if (turn == 0) {
+			if (this.checkFinder(this.blackKing)) {
+				System.out.println("The Black King has been Checked");
+				Table.PlaySound(this.getFrame().getCheckSound());
+			} else {
+				Table.PlaySound(this.getFrame().getMoveSound());
+			}
 			turn = 1;
 		}
 		else {
+			if (this.checkFinder(this.whiteKing)) {
+				System.out.println("The White King has been Checked");
+				Table.PlaySound(this.getFrame().getCheckSound());
+			} else {
+				Table.PlaySound(this.getFrame().getMoveSound());
+			}
 			turn = 0;
 		}
-		this.drawBoardInConsole();
 	}
 	
 	public Square[] findAllPseudoLegalMoves(Piece piece) {
@@ -208,9 +232,6 @@ public class Board {
 		
 		output = this.nullRemover(output);
 		
-		for (Square sq: output) {
-			System.out.println(sq);
-		}
 		
 		return output;
 		
@@ -236,6 +257,25 @@ public class Board {
 		return removed;
 	}
 	
+	public boolean checkFinder(Piece king) {
+		
+		for (Square[] row : this.situation) {
+			for (Square square : row) {
+				if (square.getPiece() != null) {
+					Square[] moveResults = this.findAllPseudoLegalMoves(square.getPiece());
+					for (Square destination : moveResults) {
+						if (destination.getRow() == king.getRow() && destination.getCol() == king.getCol()) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	
 
 	public int getTurn() {
 		return turn;
@@ -251,6 +291,38 @@ public class Board {
 
 	public void setHalfTurn(int[][] halfTurn) {
 		this.halfTurn = halfTurn;
+	}
+
+	public Piece getWhiteKing() {
+		return whiteKing;
+	}
+
+	public void setWhiteKing(Piece whiteKing) {
+		this.whiteKing = whiteKing;
+	}
+
+	public Piece getBlackKing() {
+		return blackKing;
+	}
+
+	public void setBlackKing(Piece blackKing) {
+		this.blackKing = blackKing;
+	}
+
+	public int getWinner() {
+		return winner;
+	}
+
+	public void setWinner(int winner) {
+		this.winner = winner;
+	}
+
+	public Table getFrame() {
+		return frame;
+	}
+
+	public void setFrame(Table frame) {
+		this.frame = frame;
 	}
 	
 	

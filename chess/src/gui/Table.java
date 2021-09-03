@@ -5,7 +5,10 @@ package gui;
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,9 +22,13 @@ public class Table extends JFrame implements MouseListener {
 	private JLabel[] squareContainer;
 	private Board brd;
 	
+	private File checkSound = new File("Sounds/check_sound.wav");
+	private File moveSound = new File("Sounds/move_sound.wav");
+	
 	public Table(Board brd) {
 		
 		this.brd = brd;
+		brd.setFrame(this);
 		this.setTitle("Chess");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(false);
@@ -135,7 +142,6 @@ public class Table extends JFrame implements MouseListener {
 					brd.getHalfTurn()[0] = mouseClickedLocation;
 					Square[] possibleSquare = brd.findAllPseudoLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
 					for (Square item : possibleSquare) {
-						System.out.println(item.toString());
 						JLabel subitem = item.getGuiSquare();
 						if (subitem instanceof WhiteSquare) {
 							((WhiteSquare) subitem).expressSelection();
@@ -177,7 +183,8 @@ public class Table extends JFrame implements MouseListener {
 	public void removeSelection() {
 		
 	}
-
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -218,5 +225,35 @@ public class Table extends JFrame implements MouseListener {
 	
 	public String toString() {
 		return "Table";
+	}
+	
+	public static void PlaySound(File sound) {
+		try {
+			
+			Clip clip = AudioSystem.getClip();
+			clip.open(AudioSystem.getAudioInputStream(sound));
+			clip.start();
+			
+			Thread.sleep(clip.getMicrosecondLength()/ 1000);
+			
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+
+	public File getCheckSound() {
+		return checkSound;
+	}
+
+	public void setCheckSound(File checkSound) {
+		this.checkSound = checkSound;
+	}
+
+	public File getMoveSound() {
+		return moveSound;
+	}
+
+	public void setMoveSound(File moveSound) {
+		this.moveSound = moveSound;
 	}
 }
