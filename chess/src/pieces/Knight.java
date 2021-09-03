@@ -42,45 +42,61 @@ public class Knight implements Piece {
 		int posCol = currentPosition[1];
 		
 		//NNE
-		int[] possibleMoveNNE = {posRow + 2, posCol + 1};
-		output[i] = possibleMoveNNE;
-		i++;
+		if (posRow <= 5 && posCol <= 6) {
+			int[] possibleMoveNNE = {posRow + 2, posCol + 1};
+			output[i] = possibleMoveNNE;
+			i++;
+		}
 		
 		//NEE
-		int[] possibleMoveNEE = {posRow + 1, posCol + 2};
-		output[i] = possibleMoveNEE;
-		i++;
-
+		if (posRow <= 6 && posCol <= 5) {
+			int[] possibleMoveNEE = {posRow + 1, posCol + 2};
+			output[i] = possibleMoveNEE;
+			i++;
+		}
+		
 		//SEE
-		int[] possibleMoveSEE = {posRow - 1, posCol + 2};
-		output[i] = possibleMoveSEE;
-		i++;
+		if (posRow >= 1 && posCol <= 5) {
+			int[] possibleMoveSEE = {posRow - 1, posCol + 2};
+			output[i] = possibleMoveSEE;
+			i++;
+		}
 
 		//SSE
-		int[] possibleMoveSSE = {posRow - 2, posCol + 1};
-		output[i] = possibleMoveSSE;
-		i++;
+		if (posRow >= 2 && posCol <= 6) {
+			int[] possibleMoveSSE = {posRow - 2, posCol + 1};
+			output[i] = possibleMoveSSE;
+			i++;
+		}
 		
 		//SSW
-		int[] possibleMoveSSW = {posRow - 2, posCol - 1};
-		output[i] = possibleMoveSSW;
-		i++;
+		if (posRow >= 2 && posCol >= 1) {
+			int[] possibleMoveSSW = {posRow - 2, posCol - 1};
+			output[i] = possibleMoveSSW;
+			i++;
+		}
 		
 		//SWW
-		int[] possibleMoveSWW = {posRow - 1, posCol - 2};
-		output[i] = possibleMoveSWW;
-		i++;
+		if (posRow >= 1 && posCol >= 2) {
+			int[] possibleMoveSWW = {posRow - 1, posCol - 2};
+			output[i] = possibleMoveSWW;
+			i++;
+		}
 		
 		//NWW
-		int[] possibleMoveNWW = {posRow + 1, posCol - 2};
-		output[i] = possibleMoveNWW;
-		i++;
+		if (posRow <= 6 && posCol >= 2) {
+			int[] possibleMoveNWW = {posRow + 1, posCol - 2};
+			output[i] = possibleMoveNWW;
+			i++;
+		}
 		
 		
 		//NNW
-		int[] possibleMoveNNW = {posRow + 2, posCol - 1};
-		output[i] = possibleMoveNNW;
-		i++;
+		if (posRow <= 5 && posCol >= 1) {
+			int[] possibleMoveNNW = {posRow + 2, posCol - 1};
+			output[i] = possibleMoveNNW;
+			i++;
+		}
 		
 		output = this.nullRemover(output);
 		

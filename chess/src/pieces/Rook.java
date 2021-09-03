@@ -109,6 +109,10 @@ public class Rook implements Piece{
 			deltaColumn = -1;
 		}
 		
+		if (deltaColumn != 0 && deltaRow != 0) {
+			return false;
+		}
+		
 		if (deltaColumn == 0) {
 			
 			while (initRow != destination[0]) {

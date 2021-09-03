@@ -53,12 +53,14 @@ public class Pawn implements Piece {
 				output[i] = newPosition;
 				i++;
 			}
-			if (row < 7) {
-				int[] rightCapture = {row + 1, col + 1};
+			if (row < 7 && col > 0) {
 				int[] leftCapture = {row + 1, col - 1};
-				output[i] = rightCapture;
-				i++;
 				output[i] = leftCapture;
+				i++;
+			}
+			if (row < 7 && col < 7) {
+				int[] rightCapture = {row + 1, col + 1};
+				output[i] = rightCapture;
 				i++;
 			}
 			
@@ -71,17 +73,20 @@ public class Pawn implements Piece {
 				output[i] = newPosition;
 				i++;
 			}
-			if (row < 7) {
+			if (row > 0) {
 				int[] newPosition = {row - 1, col};
 				output[i] = newPosition;
 				i++;
 			}
-			if (row < 7) {
-				int[] rightCapture = {row - 1, col + 1};
+			if (row > 0 && col > 0) {
 				int[] leftCapture = {row - 1, col - 1};
-				output[i] = rightCapture;
-				i++;
 				output[i] = leftCapture;
+				i++;
+			}
+			
+			if (row > 0 && col < 7) {
+				int[] rightCapture = {row - 1, col + 1};
+				output[i] = rightCapture;
 				i++;
 			}
 			

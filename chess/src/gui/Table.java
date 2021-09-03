@@ -130,14 +130,9 @@ public class Table extends JFrame implements MouseListener {
 		if (brd.getHalfTurn()[0] == null && brd.getHalfTurn()[1] == null) {
 			if (brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece() != null) {
 				brd.getHalfTurn()[0] = mouseClickedLocation;
-				if (square instanceof WhiteSquare) {
-					((WhiteSquare) square).expressSelection();
-				}
-				else if (square instanceof BlackSquare) {
-					((BlackSquare) square).expressSelection();
-				}
 				Square[] possibleSquare = brd.findAllPseudoLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
 				for (Square item : possibleSquare) {
+					System.out.println(item.toString());
 					JLabel subitem = item.getGuiSquare();
 					if (subitem instanceof WhiteSquare) {
 						((WhiteSquare) subitem).expressSelection();
@@ -158,10 +153,10 @@ public class Table extends JFrame implements MouseListener {
 			}
 			for (JLabel sq : this.squareContainer) {
 				if (sq instanceof WhiteSquare) {
-					((WhiteSquare) sq).expressSelection();
+					((WhiteSquare) sq).clearSelection();
 				}
 				else if (sq instanceof BlackSquare) {
-					((BlackSquare) sq).expressSelection();
+					((BlackSquare) sq).clearSelection();
 				}
 			}
 			

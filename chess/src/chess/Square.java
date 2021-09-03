@@ -67,6 +67,13 @@ public class Square {
 		this.col = col;
 	}
 	
+	public String toString() {
+		String output = "";
+		output += String.valueOf(this.row);
+		output += ", ";
+		output += String.valueOf(this.col);
+		return output;
+	}
 	
 	
 }
