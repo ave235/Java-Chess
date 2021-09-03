@@ -190,7 +190,6 @@ public class Board {
 		int i = 0;
 		for (int[] move : allPossibleMoves) {
 			if (piece.possibleSquare(location, move, this)) {
-				int[] commitedMove = {move[0], move[1]};
 				output[i] = this.getSituation()[move[0]][move[1]];
 				i++;
 			}

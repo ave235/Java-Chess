@@ -1,12 +1,8 @@
 package driver;
 
 import chess.*;
-import gui.BlackSquare;
 import gui.Table;
-import gui.WhiteSquare;
-import java.lang.Thread;
 
-import javax.swing.JLabel;
 
 
 public class Driver {
