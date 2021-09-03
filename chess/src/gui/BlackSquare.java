@@ -152,7 +152,12 @@ public class BlackSquare extends JLabel implements MouseListener{
 	}
 	
 	public void expressSelection() {
-		
+		this.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
+		this.table.refreshBoard();
+	}
+	
+	public void clearSelection() {
+		this.setBorder(null);
 	}
 	
 	public Square getSq() {
@@ -174,7 +179,7 @@ public class BlackSquare extends JLabel implements MouseListener{
 		System.out.println("This square contains: " + this.sq.getPiece());
 		System.out.println("Location of click {" + row + ", " + col + "}");
 		int [] location = {this.row, this.col};
-		this.getTable().mousePressInterpret(location);
+		this.getTable().mousePressInterpret(location, this);
 		this.table.refreshBoard();
 		
 	}

@@ -20,7 +20,7 @@ public class Driver {
 			test.drawBoardInConsole();
 			Table guiTest = new Table(test);
 			guiTest.tableAssignment();
-			
+			test.findAllPseudoLegalMoves(test.getSituation()[0][0].getPiece());
 		}
 		
 		

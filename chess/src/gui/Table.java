@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import chess.Board;
+import chess.Square;
 
 public class Table extends JFrame implements MouseListener {
 	
@@ -31,7 +32,7 @@ public class Table extends JFrame implements MouseListener {
 		ImageIcon fauxicon = new ImageIcon("Images/bk.png");
 		this.setIconImage(fauxicon.getImage());
 		
-		this.squareContainer = new JLabel[64];;
+		this.squareContainer = new JLabel[64];
 		
 		int u = 0;
 		int i = 7;
@@ -42,6 +43,7 @@ public class Table extends JFrame implements MouseListener {
 				while (j < 8) {
 					if (j % 2 == 1) {
 						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j], 7-i, j);
+						brd.getSituation()[7-i][j].setGuiSquare(bs);
 						bs.setBounds(j*100, i*100, 100, 100);
 						this.add(bs);
 						this.squareContainer[u] = bs;
@@ -52,6 +54,7 @@ public class Table extends JFrame implements MouseListener {
 					}
 					else {
 						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j], 7-i, j);
+						brd.getSituation()[7-i][j].setGuiSquare(ws);
 						ws.setBounds(j*100, i*100, 100, 100);
 						this.add(ws);
 						this.squareContainer[u] = ws;
@@ -67,6 +70,7 @@ public class Table extends JFrame implements MouseListener {
 				while (j < 8) {
 					if (j % 2 == 0) {
 						BlackSquare bs = new BlackSquare(brd.getSituation()[7-i][j], 7-i, j);
+						brd.getSituation()[7-i][j].setGuiSquare(bs);
 						bs.setBounds(j*100, i*100, 100, 100);
 						this.add(bs);
 						this.squareContainer[u] = bs;
@@ -75,6 +79,7 @@ public class Table extends JFrame implements MouseListener {
 					}
 					else {
 						WhiteSquare ws = new WhiteSquare(brd.getSituation()[7-i][j], 7-i, j);
+						brd.getSituation()[7-i][j].setGuiSquare(ws);
 						ws.setBounds(j*100, i*100, 100, 100);
 						this.add(ws);
 						this.squareContainer[u] = ws;
@@ -121,10 +126,27 @@ public class Table extends JFrame implements MouseListener {
 		}
 	}
 	
-	public void mousePressInterpret(int[] mouseClickedLocation) {
+	public void mousePressInterpret(int[] mouseClickedLocation, JLabel square) {
 		if (brd.getHalfTurn()[0] == null && brd.getHalfTurn()[1] == null) {
 			if (brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece() != null) {
 				brd.getHalfTurn()[0] = mouseClickedLocation;
+				if (square instanceof WhiteSquare) {
+					((WhiteSquare) square).expressSelection();
+				}
+				else if (square instanceof BlackSquare) {
+					((BlackSquare) square).expressSelection();
+				}
+				Square[] possibleSquare = brd.findAllPseudoLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
+				for (Square item : possibleSquare) {
+					JLabel subitem = item.getGuiSquare();
+					if (subitem instanceof WhiteSquare) {
+						((WhiteSquare) subitem).expressSelection();
+					}
+					else if (subitem instanceof BlackSquare) {
+						((BlackSquare) subitem).expressSelection();
+					}
+				}
+				
 			}
 		}
 		else {
@@ -134,9 +156,19 @@ public class Table extends JFrame implements MouseListener {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
+			for (JLabel sq : this.squareContainer) {
+				if (sq instanceof WhiteSquare) {
+					((WhiteSquare) sq).expressSelection();
+				}
+				else if (sq instanceof BlackSquare) {
+					((BlackSquare) sq).expressSelection();
+				}
+			}
+			
 			brd.getHalfTurn()[0] = null;
 			brd.getHalfTurn()[1] = null;
 		}
+		this.refreshBoard();
 	}
 	
 	public void executeSelection(int[] mouseClickedLocation) {
@@ -146,6 +178,7 @@ public class Table extends JFrame implements MouseListener {
 	public void removeSelection() {
 		
 	}
+
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

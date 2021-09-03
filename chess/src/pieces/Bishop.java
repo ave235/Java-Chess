@@ -5,13 +5,17 @@ import chess.Board;
 public class Bishop implements Piece{
 	
 	private int color;
+	private int row;
+	private int col;
 
 	public Bishop() {
 		this.setColor(0);
 	}
 	
-	public Bishop(int color) {
+	public Bishop(int color, int row, int col) {
 		this.setColor(color);
+		this.row = row;
+		this.col = col;
 	}
 
 	public int getColor() {
@@ -133,7 +137,6 @@ public class Bishop implements Piece{
 			
 			if(initRow != origin[0]) {
 				if (board.getSituation()[initRow][initCol].getPiece() != null) {
-					System.out.println("ding");
 					return false;
 				}
 				
@@ -159,21 +162,42 @@ public class Bishop implements Piece{
 	public int[][] nullRemover(int[][] list){
 		int i = 0;
 		for (int[] item : list) {
-			if (item != null) {
+			if (item == null) {
+				
+			}
+			else if (item.length != 0) {
 				i++;
 			}
 		}
 		
-		
 		int[][] removed = new int[i][0];
 		i = 0;
 		for (int[] item : list) {
-			if (item != null) {
+			if (item == null) {
+				
+			}
+			else if (item.length != 0) {
 				removed[i] = item;
 				i++;
 			}
 		}
 		
 		return removed;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 }

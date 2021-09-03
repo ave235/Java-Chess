@@ -21,7 +21,7 @@ public class Board {
 		while(i < rows) {
 			j = 0;
 			while (j < cols) {
-				Square sq = new Square(this);
+				Square sq = new Square(this, i ,j);
 				newBoard[i][j] = sq;
 				j++;
 			}
@@ -50,27 +50,27 @@ public class Board {
 	
 	public void insertPiece(String piece, int row, int col, int color) {
 		if (piece == "pawn") {
-			Pawn pawn = new Pawn(color);
+			Pawn pawn = new Pawn(color, row, col);
 			this.situation[row][col].setPiece(pawn);
 		}
 		else if (piece == "rook") {
-			Rook rook = new Rook(color);
+			Rook rook = new Rook(color, row, col);
 			this.situation[row][col].setPiece(rook);
 		}
 		else if (piece == "queen") {
-			Queen queen = new Queen(color);
+			Queen queen = new Queen(color, row, col);
 			this.situation[row][col].setPiece(queen);
 		}
 		else if (piece == "knight") {
-			Knight knight = new Knight(color);
+			Knight knight = new Knight(color, row, col);
 			this.situation[row][col].setPiece(knight);
 		}
 		else if (piece == "king") {
-			King king = new King(color);
+			King king = new King(color, row, col);
 			this.situation[row][col].setPiece(king);
 		}
 		else if (piece == "bishop") {
-			Bishop bishop = new Bishop(color);
+			Bishop bishop = new Bishop(color, row , col);
 			this.situation[row][col].setPiece(bishop);
 		}
 	}
@@ -174,9 +174,58 @@ public class Board {
 		else {
 			situation[destination[0]][destination[1]].setPiece(situation[selection[0]][selection[1]].getPiece());
 			situation[selection[0]][selection[1]].setPiece(null);
+			item.setRow(destination[0]);
+			item.setCol(destination[1]);
 		}
 		this.drawBoardInConsole();
 	}
+	
+	public Square[] findAllPseudoLegalMoves(Piece piece) {
+		
+		Square[] output = new Square[100];
+		
+		int[] location = {piece.getRow(), piece.getCol()};
+		int[][] allPossibleMoves = piece.listPossibleMoves(location);
+		
+		int i = 0;
+		for (int[] move : allPossibleMoves) {
+			if (piece.possibleSquare(location, move, this)) {
+				output[i] = this.situation[location[0]][location[1]];
+			}
+			i++;
+		}
+		
+		
+		output = this.nullRemover(output);
+		
+		for (Square sq: output) {
+			System.out.println(sq);
+		}
+		
+		return output;
+		
+	}
+	
+	public Square[] nullRemover(Square[] list){
+		int i = 0;
+		for (Square item : list) {
+			if (item != null) {
+				i++;
+			}
+		}
+		
+		Square[] removed = new Square[i];
+		i = 0;
+		for (Square item : list) {
+			if (item != null) {
+				removed[i] = item;
+				i++;
+			}
+		}
+		
+		return removed;
+	}
+	
 
 	public int getTurn() {
 		return turn;

@@ -5,13 +5,17 @@ import chess.Board;
 public class Pawn implements Piece {
 	
 	private int color; //0 is white, 1 is black
+	private int row;
+	private int col;
 	
 	public Pawn() {
 		this.setColor(0);
 	}
 	
-	public Pawn(int color) {
+	public Pawn(int color, int row, int col) {
 		this.setColor(color);
+		this.row = row;
+		this.col = col;
 	}
 	
 	
@@ -106,14 +110,16 @@ public class Pawn implements Piece {
 				return true;
 			}
 			
-			if(origin[1] - destination[1] == 1 && destination[0] - origin[0] == 1 //capture left
-			&& destPiece.getColor() == 1) {
-				return true;
-			}
-			
-			if(origin[1] - destination[1] == -1 && destination[0] - origin[0] == 1 //capture right
-			&& destPiece.getColor() == 1) {
-				return true;
+			if (destPiece != null) {
+				if(origin[1] - destination[1] == 1 && destination[0] - origin[0] == 1 //capture left
+				&& destPiece.getColor() == 1) {
+					return true;
+				}
+				
+				if(origin[1] - destination[1] == -1 && destination[0] - origin[0] == 1 //capture right
+				&& destPiece.getColor() == 1) {
+					return true;
+				}
 			}
 			
 		} 
@@ -131,14 +137,16 @@ public class Pawn implements Piece {
 				return true;
 			}
 			
-			if(origin[1] - destination[1] == 1 && destination[0] - origin[0] == -1 //capture left
-			&& destPiece.getColor() == 0) {
-				return true;
-			}
-					
-			if(origin[1] - destination[1] == -1 && destination[0] - origin[0] == -1 //capture right
-			&& destPiece.getColor() == 0) {
-				return true;
+			if (destPiece != null) {
+				if(origin[1] - destination[1] == 1 && destination[0] - origin[0] == -1 //capture left
+				&& destPiece.getColor() == 0) {
+					return true;
+				}
+						
+				if(origin[1] - destination[1] == -1 && destination[0] - origin[0] == -1 //capture right
+				&& destPiece.getColor() == 0) {
+					return true;
+				}
 			}
 		}
 		
@@ -148,7 +156,10 @@ public class Pawn implements Piece {
 	public int[][] nullRemover(int[][] list){
 		int i = 0;
 		for (int[] item : list) {
-			if (item != null) {
+			if (item == null) {
+				
+			}
+			else if (item.length != 0) {
 				i++;
 			}
 		}
@@ -156,13 +167,32 @@ public class Pawn implements Piece {
 		int[][] removed = new int[i][0];
 		i = 0;
 		for (int[] item : list) {
-			if (item != null) {
+			if (item == null) {
+				
+			}
+			else if (item.length != 0) {
 				removed[i] = item;
 				i++;
 			}
 		}
 		
 		return removed;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 	
 }

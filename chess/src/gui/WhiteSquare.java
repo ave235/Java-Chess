@@ -158,9 +158,13 @@ public class WhiteSquare extends JLabel implements MouseListener {
 	}
 	
 	public void expressSelection() {
-		
+		this.setBorder(BorderFactory.createLineBorder(Color.RED, 5));
+		this.table.refreshBoard();
 	}
 	
+	public void clearSelection() {
+		this.setBorder(null);
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -173,7 +177,7 @@ public class WhiteSquare extends JLabel implements MouseListener {
 		System.out.println("This square contains: " + this.sq.getPiece());
 		System.out.println("Location of click {" + row + ", " + col + "}");
 		int [] location = {this.row, this.col};
-		this.table.mousePressInterpret(location);
+		this.table.mousePressInterpret(location, this);
 		this.table.refreshBoard();
 		
 	}

@@ -5,13 +5,17 @@ import chess.Board;
 public class Knight implements Piece {
 
 	private int color;
+	private int row;
+	private int col;
 	
 	public Knight () {
 		this.setColor(0);
 	}
 	
-	public Knight(int color) {
+	public Knight(int color, int row, int col) {
 		this.setColor(color);
+		this.setRow(row);
+		this.setCol(col);
 	}
 
 	public int getColor() {
@@ -108,7 +112,10 @@ public class Knight implements Piece {
 	public int[][] nullRemover(int[][] list){
 		int i = 0;
 		for (int[] item : list) {
-			if (item != null) {
+			if (item == null) {
+				
+			}
+			else if (item.length != 0) {
 				i++;
 			}
 		}
@@ -116,12 +123,31 @@ public class Knight implements Piece {
 		int[][] removed = new int[i][0];
 		i = 0;
 		for (int[] item : list) {
-			if (item != null) {
+			if (item == null) {
+				
+			}
+			else if (item.length != 0) {
 				removed[i] = item;
 				i++;
 			}
 		}
 		
 		return removed;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
+	public void setRow(int row) {
+		this.row = row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
+	public void setCol(int col) {
+		this.col = col;
 	}
 }
