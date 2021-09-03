@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 import chess.Board;
 import chess.Square;
+import pieces.Piece;
 
 public class Table extends JFrame implements MouseListener {
 	
@@ -128,17 +129,20 @@ public class Table extends JFrame implements MouseListener {
 	
 	public void mousePressInterpret(int[] mouseClickedLocation, JLabel square) {
 		if (brd.getHalfTurn()[0] == null && brd.getHalfTurn()[1] == null) {
-			if (brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece() != null) {
-				brd.getHalfTurn()[0] = mouseClickedLocation;
-				Square[] possibleSquare = brd.findAllPseudoLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
-				for (Square item : possibleSquare) {
-					System.out.println(item.toString());
-					JLabel subitem = item.getGuiSquare();
-					if (subitem instanceof WhiteSquare) {
-						((WhiteSquare) subitem).expressSelection();
-					}
-					else if (subitem instanceof BlackSquare) {
-						((BlackSquare) subitem).expressSelection();
+			Piece selectedPiece = brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece();
+			if (selectedPiece != null) {
+				if (selectedPiece.getColor() == brd.getTurn()) {
+					brd.getHalfTurn()[0] = mouseClickedLocation;
+					Square[] possibleSquare = brd.findAllPseudoLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
+					for (Square item : possibleSquare) {
+						System.out.println(item.toString());
+						JLabel subitem = item.getGuiSquare();
+						if (subitem instanceof WhiteSquare) {
+							((WhiteSquare) subitem).expressSelection();
+						}
+						else if (subitem instanceof BlackSquare) {
+							((BlackSquare) subitem).expressSelection();
+						}
 					}
 				}
 				

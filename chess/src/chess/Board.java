@@ -187,7 +187,6 @@ public class Board {
 			turn = 0;
 		}
 		this.drawBoardInConsole();
-		System.out.println(turn);
 	}
 	
 	public Square[] findAllPseudoLegalMoves(Piece piece) {
