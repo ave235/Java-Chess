@@ -7,12 +7,15 @@ public class Board {
 	private Square[][] situation;
 	private int turn;
 	private int[][] halfTurn;
+	private int winner;
 	
 	// CONSTRUCTORS
 	
 	public Board() {
 		int rows = 8;
 		int cols = 8;
+		int turn = 0;
+		int winner = 0;
 		
 		Square[][] newBoard = new Square[rows][cols];
 		
@@ -177,7 +180,14 @@ public class Board {
 			item.setRow(destination[0]);
 			item.setCol(destination[1]);
 		}
+		if (turn == 0) {
+			turn = 1;
+		}
+		else {
+			turn = 0;
+		}
 		this.drawBoardInConsole();
+		System.out.println(turn);
 	}
 	
 	public Square[] findAllPseudoLegalMoves(Piece piece) {

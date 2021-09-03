@@ -109,6 +109,9 @@ public class Knight implements Piece {
 		int[][] listOfMoves = this.listPossibleMoves(origin);
 		Piece pieceAtDestination = board.getSituation()[destination[0]][destination[1]].getPiece();
 		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
 		
 		for (int[] move : listOfMoves) {
 			if(move[0] == destination[0] && move[1] == destination[1]) {

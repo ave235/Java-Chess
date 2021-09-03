@@ -102,6 +102,10 @@ public class Pawn implements Piece {
 		
 		Piece destPiece = board.getSituation()[destination[0]][destination[1]].getPiece();
 		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
+		
 		if (this.color == 0) {
 			
 			if(origin[1] == destination[1] && destination[0] - origin[0] == 1 //single move forward

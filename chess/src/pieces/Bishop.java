@@ -101,6 +101,10 @@ public class Bishop implements Piece{
 	@Override
 	public boolean possibleSquare(int[] origin, int[] destination, Board board) {
 		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
+		
 		if(origin[0] == destination[0] || origin[1] == destination[1]) {
 			return false;
 		}

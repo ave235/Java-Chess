@@ -93,6 +93,9 @@ public class Rook implements Piece{
 		int initRow = origin[0];
 		int initCol = origin[1];
 		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
 		
 		
 		if (initRow < destination[0]) {
