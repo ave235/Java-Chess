@@ -173,9 +173,6 @@ public class BlackSquare extends JLabel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("You clicked on a black square!");
-		System.out.println("This square contains: " + this.sq.getPiece());
-		System.out.println("Location of click {" + row + ", " + col + "}");
 		int [] location = {this.row, this.col};
 		this.getTable().mousePressInterpret(location, this);
 		this.table.refreshBoard();

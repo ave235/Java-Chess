@@ -7,6 +7,7 @@ public class Rook implements Piece{
 	private int color;
 	private int row;
 	private int col;
+	private boolean hasMoved;
 	
 	public Rook() {
 		this.setColor(0);
@@ -16,6 +17,14 @@ public class Rook implements Piece{
 		this.setColor(color);
 		this.setRow(row);
 		this.setCol(col);
+		this.hasMoved = false;
+	}
+	
+	public Rook(int color, int row, int col, boolean hasMoved) {
+		this.setColor(color);
+		this.setRow(row);
+		this.setCol(col);
+		this.hasMoved = hasMoved;
 	}
 
 	public int getColor() {
@@ -24,6 +33,12 @@ public class Rook implements Piece{
 
 	public void setColor(int color) {
 		this.color = color;
+	}
+	
+	public Rook copy(Rook rook) {
+		Rook output = new Rook(rook.getColor(), rook.getRow(), rook.getCol(), rook.getHasMoved());
+		
+		return output;
 	}
 	
 	public String toString() {
@@ -146,11 +161,89 @@ public class Rook implements Piece{
 		}
 		
 		if (board.getSituation()[destination[0]][destination[1]].getPiece() == null) {
-			return true;
+			if (!board.resultsInCheckToOwnKing(origin, destination)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 		
 		if (board.getSituation()[destination[0]][destination[1]].getPiece().getColor() != this.getColor()) {
-			return true;
+			if (!board.resultsInCheckToOwnKing(origin, destination)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean possibleSquareWithoutLookingForCheckToOwnKing(int[] origin, int[] destination, Board board) {
+		int deltaRow = 0;
+		int deltaColumn = 0;
+		int initRow = origin[0];
+		int initCol = origin[1];
+		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
+		
+		
+		if (initRow < destination[0]) {
+			deltaRow = 1;
+		}
+		else if (initRow > destination[0]) {
+			deltaRow = -1;
+		}
+		
+		if (initCol < destination[1]) {
+			deltaColumn = 1;
+		}
+		else if (initCol > destination[1]){
+			deltaColumn = -1;
+		}
+		
+		if (deltaColumn != 0 && deltaRow != 0) {
+			return false;
+		}
+		
+		if (deltaColumn == 0) {
+			
+			while (initRow != destination[0]) {
+				
+				if (initRow != origin[0]) {
+					if (board.getSituation()[initRow][initCol].getPiece() != null) {
+						return false;
+					}
+				}
+				
+				initRow = initRow + deltaRow;
+			}
+			
+		}
+		
+		else if (deltaRow == 0) {
+			
+			while (initCol != destination[1]) {
+				
+				if (initCol != origin[1]) {
+					if (board.getSituation()[initRow][initCol].getPiece() != null) {
+						return false;
+					}
+				}
+				
+				initCol = initCol + deltaColumn;
+			}
+		}
+		
+		if (board.getSituation()[destination[0]][destination[1]].getPiece() == null) {
+				return true;
+		}
+		
+		if (board.getSituation()[destination[0]][destination[1]].getPiece().getColor() != this.getColor()) {
+				return true;
 		}
 		
 		return false;
@@ -197,6 +290,16 @@ public class Rook implements Piece{
 	public void setCol(int col) {
 		this.col = col;
 	}
+
+	public boolean getHasMoved() {
+		return hasMoved;
+	}
+
+	public void setHasMoved(boolean hasMoved) {
+		this.hasMoved = hasMoved;
+	}
+
+	
 	
 	
 }

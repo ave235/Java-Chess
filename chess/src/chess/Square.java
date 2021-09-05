@@ -24,6 +24,33 @@ public class Square {
 		this.setRow(row);
 		this.setCol(col);
 	}
+	
+	public Square copy(Square square, Board board) {
+		Square output = new Square(board, square.getRow(), square.getCol());
+		if (square.getPiece() != null) {
+			Piece piece = square.getPiece();
+			if (piece instanceof Knight) {
+				output.setPiece(((Knight) piece).copy((Knight) piece));
+			}
+			else if (piece instanceof Bishop) {
+				output.setPiece(((Bishop) piece).copy((Bishop) piece));
+			}
+			else if (piece instanceof King) {
+				output.setPiece(((King) piece).copy((King) piece));
+			}
+			else if (piece instanceof Queen) {
+				output.setPiece(((Queen) piece).copy((Queen) piece));
+			}
+			else if (piece instanceof Pawn) {
+				output.setPiece(((Pawn) piece).copy((Pawn) piece));
+			}
+			else if (piece instanceof Rook) {
+				output.setPiece(((Rook) piece).copy((Rook) piece));
+			}
+		}
+		
+		return output;
+	}
 
 	//GETTERS AND SETTERS
 	

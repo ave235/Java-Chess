@@ -140,7 +140,7 @@ public class Table extends JFrame implements MouseListener {
 			if (selectedPiece != null) {
 				if (selectedPiece.getColor() == brd.getTurn()) {
 					brd.getHalfTurn()[0] = mouseClickedLocation;
-					Square[] possibleSquare = brd.findAllPseudoLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
+					Square[] possibleSquare = brd.findAllLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
 					for (Square item : possibleSquare) {
 						JLabel subitem = item.getGuiSquare();
 						if (subitem instanceof WhiteSquare) {

@@ -18,6 +18,12 @@ public class Pawn implements Piece {
 		this.col = col;
 	}
 	
+	public Pawn copy(Pawn pawn) {
+		Pawn output = new Pawn(pawn.getColor(), pawn.getRow(), pawn.getCol());
+		
+		return output;
+	}
+	
 	
 	public String toString() {
 		if (this.color == 0) {
@@ -99,6 +105,103 @@ public class Pawn implements Piece {
 
 	@Override
 	public boolean possibleSquare(int[] origin, int[] destination, Board board) {
+		
+		Piece destPiece = board.getSituation()[destination[0]][destination[1]].getPiece();
+		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
+		
+		if (this.color == 0) {
+			
+			if(origin[1] == destination[1] && destination[0] - origin[0] == 1 //single move forward
+			&& destPiece == null) {
+				if (!board.resultsInCheckToOwnKing(origin, destination)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+			if(origin[1] == destination[1] && destination[0] - origin[0] == 2 //double move forward
+			&& destPiece == null && board.getSituation()[destination[0]-1][destination[1]].getPiece() == null
+			&& origin[0] == 1) {
+				if (!board.resultsInCheckToOwnKing(origin, destination)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+			if (destPiece != null) {
+				if(origin[1] - destination[1] == 1 && destination[0] - origin[0] == 1 //capture left
+				&& destPiece.getColor() == 1) {
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+				
+				if(origin[1] - destination[1] == -1 && destination[0] - origin[0] == 1 //capture right
+				&& destPiece.getColor() == 1) {
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+			
+		} 
+		
+		else {
+			
+			if(origin[1] == destination[1] && destination[0] - origin[0] == -1 //single move backward
+			&& destPiece == null) {
+				if (!board.resultsInCheckToOwnKing(origin, destination)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+			if(origin[1] == destination[1] && destination[0] - origin[0] == -2 //double move forward
+			&& destPiece == null && board.getSituation()[destination[0]+1][destination[1]].getPiece() == null
+			&& origin[0] == 6) {
+				if (!board.resultsInCheckToOwnKing(origin, destination)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+			
+			if (destPiece != null) {
+				if(origin[1] - destination[1] == 1 && destination[0] - origin[0] == -1 //capture left
+				&& destPiece.getColor() == 0) {
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+						
+				if(origin[1] - destination[1] == -1 && destination[0] - origin[0] == -1 //capture right
+				&& destPiece.getColor() == 0) {
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+	
+	@Override
+	public boolean possibleSquareWithoutLookingForCheckToOwnKing(int[] origin, int[] destination, Board board) {
 		
 		Piece destPiece = board.getSituation()[destination[0]][destination[1]].getPiece();
 		
@@ -203,5 +306,7 @@ public class Pawn implements Piece {
 	public void setCol(int col) {
 		this.col = col;
 	}
+
+
 	
 }

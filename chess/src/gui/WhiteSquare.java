@@ -171,9 +171,6 @@ public class WhiteSquare extends JLabel implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		System.out.println("You clicked on a white square!");
-		System.out.println("This square contains: " + this.sq.getPiece());
-		System.out.println("Location of click {" + row + ", " + col + "}");
 		int [] location = {this.row, this.col};
 		this.table.mousePressInterpret(location, this);
 		this.table.refreshBoard();

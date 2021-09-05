@@ -7,6 +7,7 @@ public class King implements Piece{
 	private int color;
 	private int row;
 	private int col;
+	private boolean hasMoved;
 	
 	public King() {
 		this.setColor(0);
@@ -16,6 +17,20 @@ public class King implements Piece{
 		this.setColor(color);
 		this.setRow(row);
 		this.setCol(col);
+		this.hasMoved = false;
+	}
+	
+	public King(int color, int row, int col, boolean hasMoved) {
+		this.setColor(color);
+		this.setRow(row);
+		this.setCol(col);
+		this.hasMoved = hasMoved;
+	}
+	
+	public King copy(King king) {
+		King output = new King(king.getColor(), king.getRow(), king.getCol(), king.getHasMoved());
+		
+		return output;
 	}
 
 	public int getColor() {
@@ -116,6 +131,39 @@ public class King implements Piece{
 		for (int[] move : listOfMoves) {
 			if(move[0] == destination[0] && move[1] == destination[1]) {
 				if(pieceAtDestination == null) {
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+				else if(this.color != pieceAtDestination.getColor()) {
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+		
+		
+		return false;
+	}
+	
+	@Override
+	public boolean possibleSquareWithoutLookingForCheckToOwnKing(int[] origin, int[] destination, Board board) {
+		
+		int[][] listOfMoves = this.listPossibleMoves(origin);
+		Piece pieceAtDestination = board.getSituation()[destination[0]][destination[1]].getPiece();
+		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
+		
+		for (int[] move : listOfMoves) {
+			if(move[0] == destination[0] && move[1] == destination[1]) {
+				if(pieceAtDestination == null) {
 					return true;
 				}
 				else if(this.color != pieceAtDestination.getColor()) {
@@ -126,7 +174,6 @@ public class King implements Piece{
 		
 		
 		return false;
-		
 	}
 	
 	public int[][] nullRemover(int[][] list){
@@ -170,5 +217,15 @@ public class King implements Piece{
 	public void setCol(int col) {
 		this.col = col;
 	}
+
+	public boolean getHasMoved() {
+		return hasMoved;
+	}
+
+	public void setHasMoved(boolean hasMoved) {
+		this.hasMoved = hasMoved;
+	}
+
+	
 	
 }

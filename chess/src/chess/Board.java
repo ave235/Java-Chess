@@ -44,6 +44,38 @@ public class Board {
 		
 	}
 	
+	public Board copy(Board board) {
+		Board output = new Board();
+		Square[][] newBoard = new Square[8][8];
+		
+		int i = 0;
+		int j = 0;
+		while (i < 8) {
+			j = 0;
+			while (j < 8) {
+				Square sq = board.getSituation()[i][j].copy(board.getSituation()[i][j], output);
+				newBoard[i][j] = sq;
+				Piece piece = sq.getPiece();
+				if (piece instanceof King) {
+					if (piece.getColor() == 0) {
+						output.setWhiteKing(piece);
+					}
+					else {
+						output.setBlackKing(piece);
+					}
+				}
+				j++;
+			}
+			i++;
+		}
+		
+		output.setSituation(newBoard);
+		output.setTurn(board.getTurn());
+		output.setHalfTurn(new int[2][]);
+		
+		return output;
+	}
+	
 	// GETTERS AND SETTERS
 	
 	public Square[][] getSituation(){
@@ -194,8 +226,7 @@ public class Board {
 		}
 		
 		if (turn == 0) {
-			if (this.checkFinder(this.blackKing)) {
-				System.out.println("The Black King has been Checked");
+			if (this.checkFinder(this.blackKing, this)) {
 				Table.PlaySound(this.getFrame().getCheckSound());
 			} else {
 				Table.PlaySound(this.getFrame().getMoveSound());
@@ -203,18 +234,65 @@ public class Board {
 			turn = 1;
 		}
 		else {
-			if (this.checkFinder(this.whiteKing)) {
-				System.out.println("The White King has been Checked");
+			if (this.checkFinder(this.whiteKing, this)) {
 				Table.PlaySound(this.getFrame().getCheckSound());
 			} else {
 				Table.PlaySound(this.getFrame().getMoveSound());
 			}
 			turn = 0;
 		}
+		if (item instanceof King) {
+			((King) item).setHasMoved(true);
+		}
+		else if (item instanceof Rook) {
+			((Rook) item).setHasMoved(true);
+		}
+	}
+	
+	public void forceMove(int[] selection, int[] destination) {
+		Piece item = situation[selection[0]][selection[1]].getPiece();
+		if (item == null) {
+			throw new IllegalArgumentException("Selected Square does not contain a piece!");
+		}
+		else {
+			situation[destination[0]][destination[1]].setPiece(situation[selection[0]][selection[1]].getPiece());
+			situation[selection[0]][selection[1]].setPiece(null);
+			item.setRow(destination[0]);
+			item.setCol(destination[1]);
+		}
+		if (item instanceof King) {
+			((King) item).setHasMoved(true);
+		}
+		else if (item instanceof Rook) {
+			((Rook) item).setHasMoved(true);
+		}
 	}
 	
 	public Square[] findAllPseudoLegalMoves(Piece piece) {
 		
+		Square[] output = new Square[100];
+		
+		int[] location = {piece.getRow(), piece.getCol()};
+		int[][] allPossibleMoves = piece.listPossibleMoves(location);
+		
+		int i = 0;
+		for (int[] move : allPossibleMoves) {
+			if (piece.possibleSquareWithoutLookingForCheckToOwnKing(location, move, this)) {
+				output[i] = this.getSituation()[move[0]][move[1]];
+				i++;
+			}
+			
+		}
+		
+		
+		output = this.nullRemover(output);
+		
+		
+		return output;
+		
+	}
+	
+	public Square[] findAllLegalMoves(Piece piece) {
 		Square[] output = new Square[100];
 		
 		int[] location = {piece.getRow(), piece.getCol()};
@@ -234,7 +312,6 @@ public class Board {
 		
 		
 		return output;
-		
 	}
 	
 	public Square[] nullRemover(Square[] list){
@@ -257,24 +334,63 @@ public class Board {
 		return removed;
 	}
 	
-	public boolean checkFinder(Piece king) {
+	public boolean checkFinder(Piece king, Board board) {
 		
-		for (Square[] row : this.situation) {
+	
+		
+		for (Square[] row : board.getSituation()) {
 			for (Square square : row) {
 				if (square.getPiece() != null) {
-					Square[] moveResults = this.findAllPseudoLegalMoves(square.getPiece());
+					Square[] moveResults = board.findAllPseudoLegalMoves(square.getPiece());
 					for (Square destination : moveResults) {
+						System.out.println(square.getPiece().getColor());
+						System.out.println(destination.getRow() + ", " + destination.getCol());
 						if (destination.getRow() == king.getRow() && destination.getCol() == king.getCol()) {
+							System.out.println("true");
 							return true;
 						}
 					}
 				}
 			}
 		}
-		
+		System.out.println("false");
 		return false;
 	}
+	
+	public boolean resultsInCheckToOwnKing(int[] origin, int[] requestedMove) {
 
+		Board theoreticalBoard = this.copy(this);
+		
+		theoreticalBoard.forceMove(origin, requestedMove);
+		if (theoreticalBoard.getTurn() == 0) {
+			theoreticalBoard.setTurn(1);
+		}
+		else if (theoreticalBoard.getTurn() == 1) {
+			theoreticalBoard.setTurn(0);
+		}
+		if (theoreticalBoard.getTurn() == 1) {
+			boolean output = theoreticalBoard.checkFinder(theoreticalBoard.getWhiteKing(), theoreticalBoard);
+			if (theoreticalBoard.getTurn() == 0) {
+				theoreticalBoard.setTurn(1);
+			}
+			else if (theoreticalBoard.getTurn() == 1) {
+				theoreticalBoard.setTurn(0);
+			}
+			return output;
+		}
+		else {
+			boolean output = theoreticalBoard.checkFinder(theoreticalBoard.getBlackKing(), theoreticalBoard);
+			if (theoreticalBoard.getTurn() == 0) {
+				theoreticalBoard.setTurn(1);
+			}
+			else if (theoreticalBoard.getTurn() == 1) {
+				theoreticalBoard.setTurn(0);
+			}
+			return output;
+		}
+	}
+	
+	
 	
 
 	public int getTurn() {

@@ -17,6 +17,12 @@ public class Knight implements Piece {
 		this.setRow(row);
 		this.setCol(col);
 	}
+	
+	public Knight copy(Knight knight) {
+		Knight output = new Knight(knight.getColor(), knight.getRow(), knight.getCol());
+		
+		return output;
+	}
 
 	public int getColor() {
 		return color;
@@ -116,10 +122,18 @@ public class Knight implements Piece {
 		for (int[] move : listOfMoves) {
 			if(move[0] == destination[0] && move[1] == destination[1]) {
 				if(pieceAtDestination == null) {
-					return true;
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
 				}
 				else if(this.color != pieceAtDestination.getColor()) {
-					return true;
+					if (!board.resultsInCheckToOwnKing(origin, destination)) {
+						return true;
+					} else {
+						return false;
+					}
 				}
 			}
 		}
@@ -128,6 +142,7 @@ public class Knight implements Piece {
 		return false;
 	}
 	
+
 	public int[][] nullRemover(int[][] list){
 		int i = 0;
 		for (int[] item : list) {
@@ -168,5 +183,29 @@ public class Knight implements Piece {
 
 	public void setCol(int col) {
 		this.col = col;
+	}
+
+	@Override
+	public boolean possibleSquareWithoutLookingForCheckToOwnKing(int[] origin, int[] destination, Board board) {
+		int[][] listOfMoves = this.listPossibleMoves(origin);
+		Piece pieceAtDestination = board.getSituation()[destination[0]][destination[1]].getPiece();
+		
+		if (board.getTurn() != this.color) { //Prevents from moving a piece who's turn it isn't!
+			return false;
+		}
+		
+		for (int[] move : listOfMoves) {
+			if(move[0] == destination[0] && move[1] == destination[1]) {
+				if(pieceAtDestination == null) {
+					return true;
+				}
+				else if(this.color != pieceAtDestination.getColor()) {
+					return true;
+				}
+			}
+		}
+		
+		
+		return false;
 	}
 }
