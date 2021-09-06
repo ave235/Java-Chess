@@ -21,7 +21,7 @@ public class Board {
 		int rows = 8;
 		int cols = 8;
 		int turn = 0;
-		int winner = 0;
+		this.winner = 2;
 		
 		Square[][] newBoard = new Square[rows][cols];
 		
@@ -247,6 +247,14 @@ public class Board {
 		else if (item instanceof Rook) {
 			((Rook) item).setHasMoved(true);
 		}
+		
+		if (item instanceof Pawn) {
+			if (destination[0] == 7 || destination[0] == 0) {
+				this.insertPiece("queen", item.getRow(), item.getCol(), item.getColor());
+			}
+		}
+		
+		this.findConclusion(this);
 	}
 	
 	public void forceMove(int[] selection, int[] destination) {
@@ -266,7 +274,13 @@ public class Board {
 		else if (item instanceof Rook) {
 			((Rook) item).setHasMoved(true);
 		}
+		if (item instanceof Pawn) {
+			if (destination[0] == 7 || destination[0] == 0) {
+				this.insertPiece("queen", item.getRow(), item.getCol(), item.getColor());
+			}
+		}
 	}
+	
 	
 	public Square[] findAllPseudoLegalMoves(Piece piece) {
 		
@@ -343,17 +357,13 @@ public class Board {
 				if (square.getPiece() != null) {
 					Square[] moveResults = board.findAllPseudoLegalMoves(square.getPiece());
 					for (Square destination : moveResults) {
-						System.out.println(square.getPiece().getColor());
-						System.out.println(destination.getRow() + ", " + destination.getCol());
 						if (destination.getRow() == king.getRow() && destination.getCol() == king.getCol()) {
-							System.out.println("true");
 							return true;
 						}
 					}
 				}
 			}
 		}
-		System.out.println("false");
 		return false;
 	}
 	
@@ -390,8 +400,58 @@ public class Board {
 		}
 	}
 	
-	
-	
+	public void findConclusion(Board board) {
+		int turn = board.getTurn();
+		
+		Square[][] situation = board.getSituation();
+		int numPossibleMoves = 0;
+		for (Square[] row : situation) {
+			for (Square square : row) {
+				if (square.getPiece() != null) {
+					if (board.findAllLegalMoves(square.getPiece()).length > 0) {
+						numPossibleMoves += board.findAllLegalMoves(square.getPiece()).length;
+					}
+				}
+			}
+		}
+		
+		if (numPossibleMoves == 0) {
+			if (turn == 0) {
+				board.setTurn(1);
+				if (board.checkFinder(board.getWhiteKing(), board)) {
+					System.out.println("BLACK WINS");
+					board.setWinner(1);
+					if (board.getFrame() != null) {
+						board.getFrame().reactToSomeoneWinning(board.getWinner());
+					}
+				}
+				else {
+					System.out.println("STALEMATE");
+					board.setWinner(-1);
+					if (board.getFrame() != null) {
+						board.getFrame().reactToSomeoneWinning(board.getWinner());
+					}
+				}
+			}
+			else {
+				board.setTurn(0);
+				if (board.checkFinder(board.getBlackKing(), board)) {
+					System.out.println("WHITE WINS");
+					board.setWinner(0);
+					if (board.getFrame() != null) {
+						board.getFrame().reactToSomeoneWinning(board.getWinner());
+					}
+				}
+				else {
+					System.out.println("STALEMATE");
+					board.setWinner(-1);
+					if (board.getFrame() != null) {
+						board.getFrame().reactToSomeoneWinning(board.getWinner());
+					}
+				}
+			}
+		}
+	}
 
 	public int getTurn() {
 		return turn;

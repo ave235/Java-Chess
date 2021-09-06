@@ -12,8 +12,10 @@ import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import chess.Board;
+import chess.RandomAI;
 import chess.Square;
 import pieces.Piece;
 
@@ -21,6 +23,8 @@ public class Table extends JFrame implements MouseListener {
 	
 	private JLabel[] squareContainer;
 	private Board brd;
+	private RandomAI opponent;
+	
 	
 	private File checkSound = new File("Sounds/check_sound.wav");
 	private File moveSound = new File("Sounds/move_sound.wav");
@@ -35,6 +39,7 @@ public class Table extends JFrame implements MouseListener {
 		this.setSize(815,839);
 		this.getContentPane().setBackground(Color.WHITE);
 		this.setLayout(null);
+		this.setLocationRelativeTo(null);
 		
 		
 		ImageIcon fauxicon = new ImageIcon("Images/bk.png");
@@ -139,15 +144,17 @@ public class Table extends JFrame implements MouseListener {
 			Piece selectedPiece = brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece();
 			if (selectedPiece != null) {
 				if (selectedPiece.getColor() == brd.getTurn()) {
-					brd.getHalfTurn()[0] = mouseClickedLocation;
 					Square[] possibleSquare = brd.findAllLegalMoves(brd.getSituation()[mouseClickedLocation[0]][mouseClickedLocation[1]].getPiece());
-					for (Square item : possibleSquare) {
-						JLabel subitem = item.getGuiSquare();
-						if (subitem instanceof WhiteSquare) {
-							((WhiteSquare) subitem).expressSelection();
-						}
-						else if (subitem instanceof BlackSquare) {
-							((BlackSquare) subitem).expressSelection();
+					if (possibleSquare.length != 0) {
+						brd.getHalfTurn()[0] = mouseClickedLocation;
+						for (Square item : possibleSquare) {
+							JLabel subitem = item.getGuiSquare();
+							if (subitem instanceof WhiteSquare) {
+								((WhiteSquare) subitem).expressSelection();
+							}
+							else if (subitem instanceof BlackSquare) {
+								((BlackSquare) subitem).expressSelection();
+							}
 						}
 					}
 				}
@@ -156,24 +163,60 @@ public class Table extends JFrame implements MouseListener {
 		}
 		else {
 			brd.getHalfTurn()[1] = mouseClickedLocation;
-			try {
-				brd.move(brd.getHalfTurn()[0], brd.getHalfTurn()[1]);
-			} catch (Exception e) {
-				System.out.println(e);
-			}
-			for (JLabel sq : this.squareContainer) {
-				if (sq instanceof WhiteSquare) {
-					((WhiteSquare) sq).clearSelection();
+
+				try {
+					brd.move(brd.getHalfTurn()[0], brd.getHalfTurn()[1]);
+					this.figureOutIfOpponentShouldPlay();
+				} catch (Exception e) {
+					System.out.println(e);
 				}
-				else if (sq instanceof BlackSquare) {
-					((BlackSquare) sq).clearSelection();
+				for (JLabel sq : this.squareContainer) {
+					if (sq instanceof WhiteSquare) {
+						((WhiteSquare) sq).clearSelection();
+					}
+					else if (sq instanceof BlackSquare) {
+						((BlackSquare) sq).clearSelection();
+					}
 				}
-			}
 			
 			brd.getHalfTurn()[0] = null;
 			brd.getHalfTurn()[1] = null;
 		}
 		this.refreshBoard();
+	}
+	
+	public void figureOutIfOpponentShouldPlay() {
+		if (this.opponent != null) {
+			this.opponent.makeMove();
+		}
+	}
+	
+	public void reactToSomeoneWinning(int winner) {
+		String winnerText;
+		if (winner == 0) {
+			winnerText = "White won!";
+		}
+		else if (winner == 1) {
+			winnerText = "Black won!";
+		}
+		else {
+			winnerText = "Stalemate";
+		}
+		try {
+		Thread.sleep(100);
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		JFrame endingScene = new JFrame();
+		endingScene.setTitle("Chess");
+		endingScene.setAlwaysOnTop(true);
+		endingScene.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		endingScene.setSize(400, 400);
+		JLabel endingLabel = new JLabel(winnerText);
+		endingScene.add(endingLabel);
+		endingScene.setVisible(true);
+		
 	}
 	
 	public void executeSelection(int[] mouseClickedLocation) {
@@ -255,5 +298,13 @@ public class Table extends JFrame implements MouseListener {
 
 	public void setMoveSound(File moveSound) {
 		this.moveSound = moveSound;
+	}
+
+	public RandomAI getOpponent() {
+		return opponent;
+	}
+
+	public void setOpponent(RandomAI opponent) {
+		this.opponent = opponent;
 	}
 }
